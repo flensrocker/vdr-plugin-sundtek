@@ -19,7 +19,7 @@ VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ pri
 
 CXX      ?= g++
 CXXFLAGS ?= -g -O2 -Wall -Woverloaded-virtual -Wno-parentheses
-LDFLAGS  += -L/opt/lib -lmedia
+#LDFLAGS  += -L/opt/lib -lmedia
 
 ### The directory environment:
 
@@ -52,7 +52,7 @@ DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 
 ### The object files (add further files here):
 
-OBJS = $(PLUGIN).o device.o monitor.o
+OBJS = $(PLUGIN).o device.o monitor.o media.o
 
 ### The main target:
 

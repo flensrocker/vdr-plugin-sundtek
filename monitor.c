@@ -1,4 +1,5 @@
 #include "monitor.h"
+#include "media.h"
 #include "device.h"
 
 #include <sys/socket.h>
@@ -39,23 +40,23 @@ static char *GetFrontend(int devid)
 {
   if (devid < 0)
      return NULL;
-  int fd = net_connect();
+  int fd = cSundtekMedia::netConnect();
   if (fd < 0)
      return NULL;
   char *frontend = NULL;
   int id = devid;
-  struct media_device_enum *e = net_device_enum(fd, &id, 0);
+  struct media_device_enum *e = cSundtekMedia::netDeviceEnum(fd, &id, 0);
   if (e) {
      frontend = strdup((const char*)e->frontend_node);
      free(e);
      }
-  net_close(fd);
+  cSundtekMedia::netClose(fd);
   return frontend;
 }
 
 void cSundtekMonitor::Action(void)
 {
-  int fd = net_connect();
+  int fd = cSundtekMedia::netConnect();
   if (fd < 0) {
     esyslog("sundtek: can't connect monitor to mediasrv");
     return;
@@ -99,5 +100,5 @@ void cSundtekMonitor::Action(void)
              }
           }
     }
-  net_close(fd);
+  cSundtekMedia::netClose(fd);
 }
