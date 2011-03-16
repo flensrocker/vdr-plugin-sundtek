@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 
 extern "C" {
-#include <sundtek/mediaclient.h>
+#include <mediaclient.h>
 }
 
 

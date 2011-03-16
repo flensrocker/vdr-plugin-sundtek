@@ -1,7 +1,7 @@
 #include "device.h"
 
 extern "C" {
-#include <sundtek/mediaclient.h>
+#include <mediaclient.h>
 }
 
 #include <vdr/plugin.h>
