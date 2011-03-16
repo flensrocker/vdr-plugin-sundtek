@@ -1,7 +1,8 @@
 #include "device.h"
-#include "media.h"
 
+extern "C" {
 #include <sundtek/mediaclient.h>
+}
 
 #include <vdr/plugin.h>
 
@@ -25,7 +26,7 @@ cSundtekDevice::~cSundtekDevice(void)
 
 void cSundtekDevice::Enumerate(void)
 {
-  int fd = cSundtekMedia::netConnect();
+  int fd = net_connect();
   if (fd < 0) {
      esyslog("sundtek: can't connect to mediasrv for enumeration of devices");
      return;
@@ -34,7 +35,7 @@ void cSundtekDevice::Enumerate(void)
   while (true) {
         int subid = 0;
         while (true) {
-              struct media_device_enum *e = cSundtekMedia::netDeviceEnum(fd, &id, subid);
+              struct media_device_enum *e = net_device_enum(fd, &id, subid);
               if (!e)
                  break;
               new cSundtekDevice(id, (const char*)e->frontend_node);
@@ -45,7 +46,7 @@ void cSundtekDevice::Enumerate(void)
            break;
         id++;
         }
-  cSundtekMedia::netClose(fd);
+  net_close(fd);
 }
 
 void cSundtekDevice::FreeAll(void)

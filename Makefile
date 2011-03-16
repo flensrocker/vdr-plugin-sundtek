@@ -19,6 +19,7 @@ VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ pri
 
 CXX      ?= g++
 CXXFLAGS ?= -g -O2 -Wall -Woverloaded-virtual -Wno-parentheses
+LDADD    += -L/opt/lib -lmedia
 
 ### The directory environment:
 
@@ -51,7 +52,7 @@ DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 
 ### The object files (add further files here):
 
-OBJS = $(PLUGIN).o device.o monitor.o media.o
+OBJS = $(PLUGIN).o device.o monitor.o
 
 ### The main target:
 
@@ -99,7 +100,7 @@ i18n: $(I18Nmsgs) $(I18Npot)
 ### Targets:
 
 libvdr-$(PLUGIN).so: $(OBJS)
-	$(CXX) $(CXXFLAGS) -shared $(OBJS) -o $@
+	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LDADD) -o $@
 	@cp --remove-destination $@ $(LIBDIR)/$@.$(APIVERSION)
 
 dist: clean

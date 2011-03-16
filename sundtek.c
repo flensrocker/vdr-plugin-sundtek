@@ -7,7 +7,6 @@
  */
 
 #include "device.h"
-#include "media.h"
 #include "monitor.h"
 
 #include <vdr/plugin.h>
@@ -47,10 +46,8 @@ cPluginSundtek::cPluginSundtek(void)
   // Initialize any member variables here.
   // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
   // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
-  if (cSundtekMedia::Init()) {
-     cSundtekDevice::Enumerate();
-     cSundtekMonitor::StartMonitor();
-     }
+  cSundtekDevice::Enumerate();
+  cSundtekMonitor::StartMonitor();
 }
 
 cPluginSundtek::~cPluginSundtek()
