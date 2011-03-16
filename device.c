@@ -36,14 +36,14 @@ void cSundtekDevice::Enumerate(void)
               struct media_device_enum *e = net_device_enum(fd, &id, subid);
               if (!e)
                  break;
-      new cSundtekDevice(id, (const char*)e->frontend_node);
-      subid++;
-      free(e);
-    }
-    if (subid == 0)
-      break;
-    id++;
-  }
+              new cSundtekDevice(id, (const char*)e->frontend_node);
+              subid++;
+              free(e);
+              }
+        if (subid == 0)
+           break;
+        id++;
+        }
   net_close(fd);
 }
 
