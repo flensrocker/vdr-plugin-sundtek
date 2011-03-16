@@ -6,6 +6,9 @@
  * $Id$
  */
 
+#include "device.h"
+#include "monitor.h"
+
 #include <vdr/plugin.h>
 
 static const char *VERSION        = "0.0.1";
@@ -43,11 +46,15 @@ cPluginSundtek::cPluginSundtek(void)
   // Initialize any member variables here.
   // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
   // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
+  cSundtekDevice::Enumerate();
+  cSundtekMonitor::StartMonitor();
 }
 
 cPluginSundtek::~cPluginSundtek()
 {
   // Clean up after yourself!
+  cSundtekMonitor::StopMonitor();
+  cSundtekDevice::FreeAll();
 }
 
 const char *cPluginSundtek::CommandLineHelp(void)
