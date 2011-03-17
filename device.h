@@ -2,11 +2,13 @@
 #define __SUNDTEK_DEVICE_H
 
 #include <vdr/tools.h>
+#include <vdr/thread.h>
 
 
 class cSundtekDevice : public cListObject
 {
 private:
+  static cMutex _devicesMutex;
   static cList<cSundtekDevice> _devices;
   int     _deviceId;
   cString _frontend;

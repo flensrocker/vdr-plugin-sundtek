@@ -7,6 +7,7 @@ extern "C" {
 #include <vdr/plugin.h>
 
 
+cMutex cSundtekDevice::_devicesMutex;
 cList<cSundtekDevice> cSundtekDevice::_devices;
 
 
@@ -14,12 +15,14 @@ cSundtekDevice::cSundtekDevice(int DeviceId, const char *Frontend)
 :_deviceId(DeviceId)
 ,_frontend(Frontend)
 {
+  cMutexLock lock(&_devicesMutex);
   _devices.Add(this);
   isyslog("sundtek: new Sundtek device, id = %d, frontend = %s", _deviceId, *_frontend);
 }
 
 cSundtekDevice::~cSundtekDevice(void)
 {
+  cMutexLock lock(&_devicesMutex);
   _devices.Del(this, false);
   isyslog("sundtek: delete Sundtek device, id = %d, frontend = %s", _deviceId, *_frontend);
 }
@@ -61,11 +64,13 @@ close:
 
 void cSundtekDevice::FreeAll(void)
 {
+  cMutexLock lock(&_devicesMutex);
   _devices.Clear();
 }
 
 int  cSundtekDevice::GetDeviceId(const char *Frontend)
 {
+  cMutexLock lock(&_devicesMutex);
   for (cSundtekDevice *d = _devices.First(); d; d = _devices.Next(d)) {
       if (strcmp(*d->_frontend, Frontend) == 0)
          return d->_deviceId;
@@ -75,6 +80,7 @@ int  cSundtekDevice::GetDeviceId(const char *Frontend)
 
 void cSundtekDevice::Attach(int DeviceId, const char *Frontend)
 {
+  cMutexLock lock(&_devicesMutex);
   for (cSundtekDevice *d = _devices.First(); d; d = _devices.Next(d)) {
       if (strcmp(*d->_frontend, Frontend) == 0) {
          if (d->_deviceId != DeviceId) {
@@ -90,10 +96,13 @@ void cSundtekDevice::Attach(int DeviceId, const char *Frontend)
 
 void cSundtekDevice::Detach(int DeviceId)
 {
+  cMutexLock lock(&_devicesMutex);
   for (cSundtekDevice *d = _devices.First(); d; d = _devices.Next(d)) {
       if (d->_deviceId == DeviceId) {
-         cPluginManager::CallFirstService("dynamite-DetachDevice-v0.1", (void*)*d->_frontend);
+         char *frontend = strdup(*d->_frontend);
          delete d;
+         cPluginManager::CallFirstService("dynamite-ForceDetachDevice-v0.1", (void*)frontend);
+         free(frontend);
          return;
          }
       }
