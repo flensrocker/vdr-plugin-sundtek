@@ -24,7 +24,7 @@ cSundtekDevice::~cSundtekDevice(void)
   isyslog("sundtek: delete Sundtek device, id = %d, frontend = %s", _deviceId, *_frontend);
 }
 
-void cSundtekDevice::Enumerate(void)
+void cSundtekDevice::Enumerate(const char *Frontend)
 {
   int fd = net_connect();
   if (fd < 0) {
@@ -32,26 +32,45 @@ void cSundtekDevice::Enumerate(void)
      return;
      }
   int id = 0;
+  struct media_device_enum *e = NULL;
   while (true) {
         int subid = 0;
         while (true) {
-              struct media_device_enum *e = net_device_enum(fd, &id, subid);
+              e = net_device_enum(fd, &id, subid);
               if (!e)
                  break;
-              new cSundtekDevice(id, (const char*)e->frontend_node);
+              if (((Frontend == NULL) || (strcmp((const char*)e->frontend_node, Frontend) == 0))
+                 && (GetDeviceId((const char*)e->frontend_node) < 0)) {
+                 new cSundtekDevice(id, (const char*)e->frontend_node);
+                 if (Frontend != NULL)
+                    goto close;
+                 }
               subid++;
               free(e);
+              e = NULL;
               }
         if (subid == 0)
            break;
         id++;
         }
+close:
+  if (e)
+     free(e);
   net_close(fd);
 }
 
 void cSundtekDevice::FreeAll(void)
 {
   _devices.Clear();
+}
+
+int  cSundtekDevice::GetDeviceId(const char *Frontend)
+{
+  for (cSundtekDevice *d = _devices.First(); d; d = _devices.Next(d)) {
+      if (strcmp(*d->_frontend, Frontend) == 0)
+         return d->_deviceId;
+      }
+  return -1;
 }
 
 void cSundtekDevice::Attach(int DeviceId, const char *Frontend)

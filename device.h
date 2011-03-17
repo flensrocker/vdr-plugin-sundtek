@@ -16,8 +16,10 @@ private:
 public:
   virtual ~cSundtekDevice(void);
 
-  static void Enumerate(void);
+  static void Enumerate(const char *Frontend);
   static void FreeAll(void);
+
+  static int  GetDeviceId(const char *Frontend);
 
   static void Attach(int DeviceId, const char *Frontend);
   static void Detach(int DeviceId);

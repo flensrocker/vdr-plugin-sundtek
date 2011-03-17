@@ -11,7 +11,7 @@
 
 #include <vdr/plugin.h>
 
-static const char *VERSION        = "0.0.1";
+static const char *VERSION        = "0.0.1a";
 static const char *DESCRIPTION    = "support for special Sundtek device features";
 static const char *MAINMENUENTRY  = NULL;
 
@@ -46,7 +46,7 @@ cPluginSundtek::cPluginSundtek(void)
   // Initialize any member variables here.
   // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
   // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
-  cSundtekDevice::Enumerate();
+  cSundtekDevice::Enumerate(NULL);
   cSundtekMonitor::StartMonitor();
 }
 
@@ -129,7 +129,18 @@ bool cPluginSundtek::SetupParse(const char *Name, const char *Value)
 
 bool cPluginSundtek::Service(const char *Id, void *Data)
 {
-  // Handle custom service requests from other plugins
+  if ((strcmp(Id, "dynamite-event-DeviceAttached-v0.1") == 0) && (Data != NULL)) {
+     int deviceId = cSundtekDevice::GetDeviceId((const char*)Data);
+     if (deviceId < 0)
+        cSundtekDevice::Enumerate((const char*)Data);
+     return true;
+     }
+  else if ((strcmp(Id, "dynamite-event-DeviceDetached-v0.1") == 0) && (Data != NULL)) {
+     int deviceId = cSundtekDevice::GetDeviceId((const char*)Data);
+     if (deviceId >= 0)
+        cSundtekDevice::Detach(deviceId);
+     return true;
+     }
   return false;
 }
 
