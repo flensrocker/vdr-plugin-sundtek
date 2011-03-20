@@ -8,3 +8,8 @@ VDR Plugin 'sundtek' Revision History
 2011-03-18: Version 0.0.1c
 
 - use "ForceDetachDevice" of dynamite if the stick is unplugged
+
+2011-03-20: Version 0.0.1d
+
+- while enumerating the devices on startup, attach the found devices
+  via dynamite - so they don't have to start at /dev/dvb/adapter0/...

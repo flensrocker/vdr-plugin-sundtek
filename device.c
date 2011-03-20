@@ -44,7 +44,8 @@ void cSundtekDevice::Enumerate(const char *Frontend)
                  break;
               if (((Frontend == NULL) || (strcmp((const char*)e->frontend_node, Frontend) == 0))
                  && (GetDeviceId((const char*)e->frontend_node) < 0)) {
-                 new cSundtekDevice(id, (const char*)e->frontend_node);
+                 isyslog("sundtek: enumerate devices: found id %d, frontend %s", id, (const char*)e->frontend_node);
+                 Attach(id, (const char*)e->frontend_node);
                  if (Frontend != NULL)
                     goto close;
                  }
@@ -91,7 +92,9 @@ void cSundtekDevice::Attach(int DeviceId, const char *Frontend)
          }
       }
   new cSundtekDevice(DeviceId, Frontend);
-  cPluginManager::CallFirstService("dynamite-AttachDevice-v0.1", (void*)Frontend);
+#ifdef __DYNAMIC_DEVICE_PROBE
+  cDynamicDeviceProbe::QueueDynamicDeviceCommand(ddpcAttach, Frontend);
+#endif
 }
 
 void cSundtekDevice::Detach(int DeviceId)
