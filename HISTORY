@@ -13,3 +13,8 @@ VDR Plugin 'sundtek' Revision History
 
 - while enumerating the devices on startup, attach the found devices
   via dynamite - so they don't have to start at /dev/dvb/adapter0/...
+
+2011-04-20: Version 0.0.1e
+
+- use libmediaclient instead of libmedia
+
