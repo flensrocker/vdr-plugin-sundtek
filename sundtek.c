@@ -11,7 +11,7 @@
 
 #include <vdr/plugin.h>
 
-static const char *VERSION        = "0.0.2";
+static const char *VERSION        = "0.0.2a";
 static const char *DESCRIPTION    = "support for special Sundtek device features";
 static const char *MAINMENUENTRY  = NULL;
 

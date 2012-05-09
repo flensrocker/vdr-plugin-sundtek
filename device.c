@@ -29,7 +29,7 @@ cSundtekDevice::~cSundtekDevice(void)
 
 void cSundtekDevice::Enumerate(const char *Frontend)
 {
-  int fd = net_connect();
+  int fd = net_connect(0);
   if (fd < 0) {
      esyslog("sundtek: can't connect to mediasrv for enumeration of devices");
      return;

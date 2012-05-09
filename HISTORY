@@ -21,3 +21,8 @@ VDR Plugin 'sundtek' Revision History
 2011-08-31: Version 0.0.2
 
 - use new net_register_notification function
+
+2012-05-09: Version 0.0.2a
+
+- net_connect has a parameter now
+

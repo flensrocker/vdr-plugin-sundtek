@@ -41,7 +41,7 @@ static char *GetFrontend(int devid)
 {
   if (devid < 0)
      return NULL;
-  int fd = net_connect();
+  int fd = net_connect(0);
   if (fd < 0)
      return NULL;
   char *frontend = NULL;
