@@ -26,3 +26,6 @@ VDR Plugin 'sundtek' Revision History
 
 - net_connect has a parameter now
 
+2012-09-12: Version 0.0.3
+
+- add new Service call: sundtek-Monitor-v0.1 [start|stop]

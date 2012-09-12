@@ -7,6 +7,7 @@
 class cSundtekMonitor : public cThread
 {
 private:
+  static cMutex _monitorMutex;
   static cSundtekMonitor *_monitor;
 
   cSundtekMonitor(void);

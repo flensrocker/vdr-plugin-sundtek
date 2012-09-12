@@ -17,3 +17,8 @@ This plugin handles some features provided by the libmedia from Sundtek.
 
 - detection of plugged in/out Sundtek devices so the dynamite-plugin
   can attach/detach them
+
+Services:
+sundtek-Monitor-v0.1 [start|stop]
+starts or stops the thread which is connected to mediasrv.
+Your init-script for mediasrv should use it after start and before stop.

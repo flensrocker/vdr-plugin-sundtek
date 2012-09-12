@@ -8,6 +8,7 @@ extern "C" {
 }
 
 
+cMutex cSundtekMonitor::_monitorMutex;
 cSundtekMonitor *cSundtekMonitor::_monitor = NULL;
 
 
@@ -21,6 +22,7 @@ cSundtekMonitor::~cSundtekMonitor(void)
 
 void cSundtekMonitor::StartMonitor(void)
 {
+  cMutexLock lock(&_monitorMutex);
   if (_monitor != NULL)
      return;
   _monitor = new cSundtekMonitor;
@@ -30,6 +32,7 @@ void cSundtekMonitor::StartMonitor(void)
 
 void cSundtekMonitor::StopMonitor(void)
 {
+  cMutexLock lock(&_monitorMutex);
   if (_monitor == NULL)
      return;
   _monitor->Cancel(5);
