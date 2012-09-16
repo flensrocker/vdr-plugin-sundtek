@@ -26,8 +26,10 @@ void cSundtekMonitor::StartMonitor(void)
   if (_monitor != NULL)
      return;
   _monitor = new cSundtekMonitor;
-  if (_monitor)
+  if (_monitor) {
      _monitor->Start();
+     isyslog("sundtek: monitor started");
+     }
 }
 
 void cSundtekMonitor::StopMonitor(void)
@@ -38,6 +40,7 @@ void cSundtekMonitor::StopMonitor(void)
   _monitor->Cancel(5);
   delete _monitor;
   _monitor = NULL;
+  isyslog("sundtek: monitor stopped");
 }
 
 static char *GetFrontend(int devid)
