@@ -74,12 +74,15 @@ void cSundtekMonitor::Action(void)
   pfd.events = POLLIN | POLLHUP;
   while (true) {
         int count = poll(&pfd, 1, 1000);
-        if (!Running())
-            break;
-        if (count == 0)
+        if (count == 0) {
+           if (!Running())
+               break;
            continue;
+           }
         if (count < 0) {
            esyslog("sundtek: error on poll: %d", errno);
+           if (!Running())
+               break;
            continue;
            }
         if (pfd.revents & (POLLHUP | POLLERR | POLLNVAL)) {
