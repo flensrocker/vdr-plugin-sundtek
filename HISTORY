@@ -29,3 +29,8 @@ VDR Plugin 'sundtek' Revision History
 2012-09-12: Version 0.0.3
 
 - add new Service call: sundtek-Monitor-v0.1 [start|stop]
+
+2012-09-16: Version 0.0.3a
+
+- add new Service call: sundtek-Enumerate-v0.1
+- re-enumerate devices on monitor start via Service call

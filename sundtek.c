@@ -11,7 +11,7 @@
 
 #include <vdr/plugin.h>
 
-static const char *VERSION        = "0.0.3";
+static const char *VERSION        = "0.0.3a";
 static const char *DESCRIPTION    = "support for special Sundtek device features";
 static const char *MAINMENUENTRY  = NULL;
 
@@ -142,10 +142,16 @@ bool cPluginSundtek::Service(const char *Id, void *Data)
      return true;
      }
   else if ((strcmp(Id, "sundtek-Monitor-v0.1") == 0) && (Data != NULL)) {
-     if (strcmp((const char*)Data, "start") == 0)
+     if (strcmp((const char*)Data, "start") == 0) {
+        cSundtekDevice::Enumerate(NULL);
         cSundtekMonitor::StartMonitor();
+        }
      else if (strcmp((const char*)Data, "stop") == 0)
         cSundtekMonitor::StopMonitor();
+     return true;
+     }
+  else if (strcmp(Id, "sundtek-Enumerate-v0.1") == 0) {
+     cSundtekDevice::Enumerate(NULL);
      return true;
      }
   return false;

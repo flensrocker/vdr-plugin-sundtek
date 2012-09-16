@@ -22,3 +22,6 @@ Services:
 sundtek-Monitor-v0.1 [start|stop]
 starts or stops the thread which is connected to mediasrv.
 Your init-script for mediasrv should use it after start and before stop.
+
+sundtek-Scan-v0.1
+get current list of devices from mediasrv and attach them.
